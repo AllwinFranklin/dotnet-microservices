@@ -17,6 +17,7 @@ namespace Discount.API.Extensions
 
                 try
                 {
+                    logger.LogInformation("Migrating PostgresSQL database");
                     using var connection = new NpgsqlConnection(configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
                     connection.Open();
 
@@ -40,10 +41,11 @@ namespace Discount.API.Extensions
 
                     command.CommandText = "INSERT INTO Coupon (ProductName, Description, Amount) VALUES ('Samsung 10', 'Samsung Discount', 100)";
                     command.ExecuteNonQuery();
+
+                    logger.LogInformation("Migrated PostgresSQL database");
                 }
                 catch (NpgsqlException ex)
                 {
-
                     throw;
                 }
 

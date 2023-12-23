@@ -43,8 +43,14 @@ namespace Discount.Grpc.Extensions
                 }
                 catch (NpgsqlException ex)
                 {
+                    logger.LogError(ex, "An error occurred while migrating the database used on context {DbContextName}", typeof(TContext).Name);
 
-                    throw;
+                    if (retryForAvailability < 50)
+                    {
+                        retryForAvailability++;
+                        Thread.Sleep(2000);
+                        MigrateDatabase<TContext>(host, retryForAvailability);
+                    }
                 }
 
             }

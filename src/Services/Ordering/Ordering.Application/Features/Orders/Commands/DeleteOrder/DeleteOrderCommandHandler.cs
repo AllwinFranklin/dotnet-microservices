@@ -24,16 +24,13 @@ namespace Ordering.Application.Features.Orders.Commands.DeleteOrder
         public async Task<Unit> Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
         {
             var orderToDelete = await _orderRepository.GetByIdAsync(request.Id);
-            await _orderRepository.DeleteAsync(orderToDelete);
             if (orderToDelete == null)
-            {
+            {                
                 throw new NotFoundException(nameof(Order), request.Id);
             }
-            _mapper.Map(request, orderToDelete, typeof(UpdateOrderCommand), typeof(Order));
 
             await _orderRepository.DeleteAsync(orderToDelete);
-
-            _logger.LogInformation($"Order {orderToDelete.Id} is successfully deleted.");
+            _logger.LogInformation($"Order {request.Id} is successfully deleted.");
 
             return Unit.Value;
         }

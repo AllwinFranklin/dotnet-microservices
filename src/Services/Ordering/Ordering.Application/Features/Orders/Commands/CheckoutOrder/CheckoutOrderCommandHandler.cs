@@ -45,7 +45,6 @@ namespace Ordering.Application.Features.Orders.Commands.CheckoutOrder
             catch (Exception ex)
             {
                 _logger.LogError($"Oder {newOrder.Id} failed due to an error with the email service : {ex.Message}");
-                throw;
             }
         }
     }
